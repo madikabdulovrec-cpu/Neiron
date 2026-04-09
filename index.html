@@ -1,2 +1,1116 @@
 <!DOCTYPE html>
-<html><head><meta http-equiv="refresh" content="0; url=kmis_workflow.html"></head></html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>МЦ «Нейрон» — Медицинский центр в Актау</title>
+    <meta name="description" content="Медицинский центр Нейрон — многопрофильная клиника в г. Актау. Хирургия, диагностика, терапия, офтальмология, реабилитация. Онлайн-запись 24/7.">
+    <style>
+        :root {
+            --primary: #0a7c8e;
+            --primary-dark: #065a67;
+            --primary-light: #e0f5f8;
+            --accent: #f59e0b;
+            --accent-light: #fef3c7;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --danger: #ef4444;
+            --radius: 16px;
+            --shadow: 0 4px 24px rgba(0,0,0,0.07);
+            --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+
+        /* ── UTILITY ── */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+        .text-center { text-align: center; }
+
+        /* ── TOP BAR ── */
+        .topbar {
+            background: var(--primary-dark);
+            color: rgba(255,255,255,0.85);
+            font-size: 13px;
+            padding: 8px 0;
+        }
+        .topbar .container { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+        .topbar a { color: rgba(255,255,255,0.9); text-decoration:none; }
+        .topbar a:hover { color: var(--accent); }
+        .topbar-contacts { display:flex; gap:20px; flex-wrap:wrap; }
+        .topbar-social { display:flex; gap:12px; }
+
+        /* ── HEADER ── */
+        .header {
+            background: var(--white);
+            box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+            position: sticky; top:0; z-index:100;
+        }
+        .header .container { display:flex; align-items:center; justify-content:space-between; padding-top:12px; padding-bottom:12px; }
+        .logo { display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--text); }
+        .logo-icon {
+            width:48px; height:48px; border-radius:12px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display:flex; align-items:center; justify-content:center;
+            color:#fff; font-weight:800; font-size:20px;
+        }
+        .logo-text h2 { font-size:20px; line-height:1.2; color: var(--primary-dark); }
+        .logo-text span { font-size:12px; color: var(--text-light); }
+
+        nav { display:flex; gap:6px; flex-wrap:wrap; }
+        nav a {
+            padding: 8px 14px; border-radius: 8px;
+            text-decoration:none; color: var(--text); font-size:14px; font-weight:500;
+            transition: all 0.2s;
+        }
+        nav a:hover, nav a.active { background: var(--primary-light); color: var(--primary-dark); }
+        .btn-nav {
+            background: var(--primary) !important; color:#fff !important;
+            font-weight: 600 !important;
+        }
+        .btn-nav:hover { background: var(--primary-dark) !important; }
+
+        .mobile-menu-btn { display:none; background:none; border:none; cursor:pointer; padding:8px; }
+        .mobile-menu-btn span { display:block; width:24px; height:2px; background:var(--text); margin:5px 0; transition:0.3s; }
+
+        /* ── HERO ── */
+        .hero {
+            background: linear-gradient(135deg, #064e5c 0%, #0a7c8e 50%, #0e9baf 100%);
+            color: #fff;
+            padding: 80px 0 90px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::after {
+            content:''; position:absolute; top:0; right:0; bottom:0; left:0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .hero .container { position:relative; z-index:1; display:grid; grid-template-columns:1.1fr 0.9fr; gap:60px; align-items:center; }
+        .hero h1 { font-size: 42px; font-weight: 800; line-height: 1.2; margin-bottom: 18px; }
+        .hero h1 span { color: var(--accent); }
+        .hero p { font-size: 17px; opacity:0.9; margin-bottom:30px; max-width:520px; }
+        .hero-buttons { display:flex; gap:14px; flex-wrap:wrap; }
+        .btn {
+            display:inline-flex; align-items:center; gap:8px;
+            padding: 14px 28px; border-radius: 12px; font-size:15px; font-weight:600;
+            text-decoration:none; cursor:pointer; border:none; transition:all 0.25s;
+        }
+        .btn-primary { background: var(--accent); color:#1a1a2e; }
+        .btn-primary:hover { background: #d97706; transform:translateY(-2px); box-shadow:0 6px 20px rgba(245,158,11,0.35); }
+        .btn-outline { background:transparent; color:#fff; border:2px solid rgba(255,255,255,0.4); }
+        .btn-outline:hover { border-color:#fff; background:rgba(255,255,255,0.1); }
+
+        .hero-stats { display:flex; gap:36px; margin-top:36px; }
+        .hero-stat { text-align:center; }
+        .hero-stat .num { font-size:36px; font-weight:800; color: var(--accent); }
+        .hero-stat .label { font-size:13px; opacity:0.75; margin-top:2px; }
+
+        .hero-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 20px;
+            padding: 32px;
+        }
+        .hero-card h3 { font-size:18px; margin-bottom:16px; }
+        .quick-links { display:flex; flex-direction:column; gap:10px; }
+        .quick-link {
+            display:flex; align-items:center; gap:12px;
+            background: rgba(255,255,255,0.1);
+            padding: 12px 16px; border-radius:12px;
+            color:#fff; text-decoration:none; font-size:14px;
+            transition: all 0.2s;
+        }
+        .quick-link:hover { background: rgba(255,255,255,0.2); transform:translateX(4px); }
+        .quick-link .ql-icon {
+            width:36px; height:36px; border-radius:10px;
+            background: rgba(255,255,255,0.15);
+            display:flex; align-items:center; justify-content:center; font-size:16px;
+            flex-shrink:0;
+        }
+
+        /* ── SECTIONS ── */
+        section { padding: 70px 0; }
+        .section-header { text-align:center; margin-bottom:48px; }
+        .section-header h2 { font-size:32px; font-weight:800; margin-bottom:10px; color: var(--text); }
+        .section-header p { font-size:16px; color: var(--text-light); max-width:600px; margin:0 auto; }
+        .section-label {
+            display:inline-block; padding:4px 14px; border-radius:20px;
+            background: var(--primary-light); color: var(--primary);
+            font-size:13px; font-weight:600; margin-bottom:12px;
+        }
+
+        /* ── SERVICE CARDS ── */
+        .service-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 28px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            border: 1px solid var(--border);
+            text-decoration: none;
+            color: var(--text);
+            display: block;
+        }
+        .service-card:hover { transform:translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+        .service-icon {
+            width:52px; height:52px; border-radius:14px;
+            display:flex; align-items:center; justify-content:center;
+            font-size:24px; margin-bottom:16px;
+        }
+        .service-card h3 { font-size:17px; font-weight:700; margin-bottom:8px; }
+        .service-card p { font-size:14px; color: var(--text-light); }
+
+        /* ── BOOKING SECTION ── */
+        .booking-section {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: #fff;
+            border-radius: 24px;
+            padding: 50px;
+            margin: 0 20px;
+        }
+        .booking-section h2 { font-size:30px; font-weight:800; margin-bottom:12px; }
+        .booking-section p { opacity:0.85; margin-bottom:30px; }
+        .booking-form { display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:14px; align-items:end; }
+        .form-group label { display:block; font-size:13px; margin-bottom:6px; opacity:0.8; }
+        .form-group select, .form-group input {
+            width:100%; padding:14px 16px; border-radius:12px; border:1px solid rgba(255,255,255,0.2);
+            background:rgba(255,255,255,0.1); color:#fff; font-size:15px;
+            backdrop-filter:blur(4px);
+        }
+        .form-group select option { color:#333; background:#fff; }
+        .form-group input::placeholder { color: rgba(255,255,255,0.5); }
+        .btn-book {
+            padding:14px 32px; border-radius:12px; border:none;
+            background: var(--accent); color:#1a1a2e; font-size:15px; font-weight:700;
+            cursor:pointer; transition:all 0.25s; white-space:nowrap;
+        }
+        .btn-book:hover { background: #d97706; transform:translateY(-2px); }
+
+        /* ── FAQ / NAVIGATOR ── */
+        .faq-section { background: var(--white); }
+        .faq-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+        .faq-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .faq-item:hover { border-color: var(--primary); }
+        .faq-question {
+            padding: 20px 24px;
+            cursor: pointer;
+            display:flex; justify-content:space-between; align-items:center;
+            font-weight:600; font-size:15px;
+            user-select:none;
+        }
+        .faq-question::after { content:'+'; font-size:22px; color:var(--primary); transition:transform 0.3s; font-weight:300; }
+        .faq-item.open .faq-question::after { transform:rotate(45deg); }
+        .faq-answer {
+            max-height:0; overflow:hidden; transition: max-height 0.4s ease;
+            padding: 0 24px;
+        }
+        .faq-item.open .faq-answer { max-height:400px; padding-bottom:20px; }
+        .faq-answer p { font-size:14px; color:var(--text-light); line-height:1.7; }
+        .faq-answer .faq-tag {
+            display:inline-block; padding:3px 10px; border-radius:6px;
+            font-size:12px; font-weight:600; margin-top:8px;
+        }
+        .tag-blue { background:#dbeafe; color:#1d4ed8; }
+        .tag-green { background:#dcfce7; color:#15803d; }
+        .tag-purple { background:#f3e8ff; color:#7c3aed; }
+        .tag-orange { background:#ffedd5; color:#c2410c; }
+
+        /* ── DOCTORS ── */
+        .doctor-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align:center;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+        .doctor-card:hover { transform:translateY(-4px); box-shadow: var(--shadow-lg); }
+        .doctor-avatar {
+            width:80px; height:80px; border-radius:50%;
+            background: linear-gradient(135deg, var(--primary-light), #b2ebf2);
+            display:flex; align-items:center; justify-content:center;
+            margin: 0 auto 14px; font-size:28px; color: var(--primary);
+        }
+        .doctor-card h4 { font-size:15px; font-weight:700; margin-bottom:4px; }
+        .doctor-card .specialty { font-size:13px; color:var(--primary); font-weight:500; }
+        .doctor-card .category { font-size:12px; color:var(--text-light); margin-top:4px; }
+
+        /* ── CORPORATE ── */
+        .corp-section { background: linear-gradient(180deg, #f0fdf4, var(--bg)); }
+        .corp-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 32px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        .corp-features { display:flex; flex-direction:column; gap:16px; margin-top:20px; }
+        .corp-feature {
+            display:flex; gap:14px; align-items:flex-start;
+        }
+        .corp-feature-icon {
+            width:40px; height:40px; border-radius:10px;
+            background: var(--primary-light);
+            display:flex; align-items:center; justify-content:center;
+            font-size:18px; flex-shrink:0;
+        }
+        .corp-feature h4 { font-size:15px; font-weight:600; }
+        .corp-feature p { font-size:13px; color:var(--text-light); margin-top:2px; }
+
+        .corp-logos {
+            display:flex; flex-wrap:wrap; gap:14px; margin-top:20px;
+        }
+        .corp-logo {
+            padding:10px 18px; border-radius:10px;
+            background: var(--bg); border:1px solid var(--border);
+            font-size:13px; font-weight:600; color:var(--text-light);
+        }
+
+        /* ── CONTACTS ── */
+        .contact-cards { display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; }
+        .contact-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        .contact-card h4 { font-size:15px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+        .contact-card p, .contact-card a { font-size:14px; color:var(--text-light); text-decoration:none; display:block; margin-bottom:6px; }
+        .contact-card a:hover { color:var(--primary); }
+
+        /* ── SCHEDULE TABLE ── */
+        .schedule-table {
+            width:100%; border-collapse:collapse; font-size:14px;
+            background: var(--white); border-radius:var(--radius); overflow:hidden;
+            box-shadow: var(--shadow);
+        }
+        .schedule-table th {
+            background: var(--primary); color:#fff; padding:14px 18px;
+            text-align:left; font-weight:600; font-size:13px;
+        }
+        .schedule-table td { padding:12px 18px; border-bottom:1px solid var(--border); }
+        .schedule-table tr:last-child td { border-bottom:none; }
+        .schedule-table tr:hover td { background:var(--primary-light); }
+        .time-badge {
+            display:inline-block; padding:2px 8px; border-radius:6px;
+            background:var(--success); color:#fff; font-size:12px; font-weight:600;
+        }
+        .time-badge.closed { background:var(--danger); }
+
+        /* ── WORKFLOW SECTION ── */
+        .workflow-banner {
+            background: linear-gradient(135deg, #1e3a5f, #2563eb);
+            color: #fff;
+            border-radius: 20px;
+            padding: 40px 50px;
+            display:flex; align-items:center; justify-content:space-between; gap:30px;
+            margin: 0 20px;
+        }
+        .workflow-banner h3 { font-size:22px; font-weight:700; margin-bottom:8px; }
+        .workflow-banner p { opacity:0.8; font-size:15px; }
+        .btn-workflow {
+            padding:14px 28px; border-radius:12px; border:2px solid #fff;
+            background:transparent; color:#fff; font-size:15px; font-weight:600;
+            cursor:pointer; transition:all 0.25s; white-space:nowrap; text-decoration:none;
+        }
+        .btn-workflow:hover { background:#fff; color:#1e3a5f; }
+
+        /* ── WHATSAPP FLOAT ── */
+        .whatsapp-float {
+            position:fixed; bottom:24px; right:24px; z-index:999;
+            width:60px; height:60px; border-radius:50%;
+            background:#25d366; color:#fff;
+            display:flex; align-items:center; justify-content:center;
+            font-size:28px; text-decoration:none;
+            box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+            transition: all 0.3s;
+            animation: pulse-wa 2s infinite;
+        }
+        .whatsapp-float:hover { transform:scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.5); }
+        @keyframes pulse-wa {
+            0%,100% { box-shadow: 0 4px 20px rgba(37,211,102,0.4); }
+            50% { box-shadow: 0 4px 30px rgba(37,211,102,0.7); }
+        }
+        .whatsapp-tooltip {
+            position:absolute; right:70px; top:50%; transform:translateY(-50%);
+            background:#fff; color:#333; padding:8px 14px; border-radius:8px;
+            font-size:13px; font-weight:500; white-space:nowrap;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+            opacity:0; pointer-events:none; transition:opacity 0.3s;
+        }
+        .whatsapp-float:hover .whatsapp-tooltip { opacity:1; }
+
+        /* ── FOOTER ── */
+        .footer {
+            background: #0f1f2e;
+            color: rgba(255,255,255,0.75);
+            padding: 60px 0 30px;
+        }
+        .footer-grid { display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:40px; }
+        .footer h4 { color:#fff; font-size:16px; margin-bottom:16px; }
+        .footer p, .footer a { font-size:14px; color:rgba(255,255,255,0.6); text-decoration:none; display:block; margin-bottom:8px; }
+        .footer a:hover { color: var(--accent); }
+        .footer-bottom { border-top:1px solid rgba(255,255,255,0.1); margin-top:40px; padding-top:20px; text-align:center; font-size:13px; color:rgba(255,255,255,0.4); }
+
+        /* ── MODAL ── */
+        .modal-overlay {
+            display:none; position:fixed; top:0; left:0; right:0; bottom:0;
+            background:rgba(0,0,0,0.5); z-index:1000;
+            align-items:center; justify-content:center;
+        }
+        .modal-overlay.active { display:flex; }
+        .modal {
+            background:var(--white); border-radius:20px; padding:40px;
+            max-width:500px; width:90%; max-height:90vh; overflow-y:auto;
+            box-shadow: var(--shadow-lg);
+        }
+        .modal h3 { font-size:22px; font-weight:700; margin-bottom:8px; }
+        .modal p { font-size:14px; color:var(--text-light); margin-bottom:24px; }
+        .modal .form-group { margin-bottom:16px; }
+        .modal label { display:block; font-size:13px; font-weight:600; margin-bottom:6px; color:var(--text); }
+        .modal input, .modal select, .modal textarea {
+            width:100%; padding:12px 16px; border-radius:10px; border:1px solid var(--border);
+            font-size:14px; background:var(--bg); color:var(--text);
+        }
+        .modal textarea { resize:vertical; min-height:80px; }
+        .modal input:focus, .modal select:focus, .modal textarea:focus { outline:none; border-color:var(--primary); }
+        .btn-submit {
+            width:100%; padding:14px; border-radius:12px; border:none;
+            background:var(--primary); color:#fff; font-size:15px; font-weight:700;
+            cursor:pointer; transition:all 0.25s; margin-top:8px;
+        }
+        .btn-submit:hover { background:var(--primary-dark); }
+        .modal-close {
+            position:absolute; top:16px; right:20px;
+            background:none; border:none; font-size:24px; cursor:pointer; color:var(--text-light);
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width:1024px) {
+            .hero .container { grid-template-columns:1fr; }
+            .hero-card { display:none; }
+            .grid-4 { grid-template-columns: 1fr 1fr; }
+            .booking-form { grid-template-columns:1fr 1fr; }
+            .footer-grid { grid-template-columns:1fr 1fr; }
+        }
+        @media (max-width:768px) {
+            .topbar .container { justify-content:center; }
+            nav { display:none; }
+            .mobile-menu-btn { display:block; }
+            nav.open { display:flex; flex-direction:column; position:absolute; top:100%; left:0; right:0; background:var(--white); padding:16px; box-shadow:var(--shadow); }
+            .hero { padding:50px 0 60px; }
+            .hero h1 { font-size:28px; }
+            .hero-stats { gap:20px; }
+            .hero-stat .num { font-size:26px; }
+            .grid-2, .grid-3, .grid-4, .faq-grid { grid-template-columns:1fr; }
+            .booking-section { padding:30px 20px; margin:0 10px; }
+            .booking-form { grid-template-columns:1fr; }
+            .contact-cards { grid-template-columns:1fr; }
+            .workflow-banner { flex-direction:column; text-align:center; padding:30px 20px; margin:0 10px; }
+            .footer-grid { grid-template-columns:1fr; }
+            section { padding:50px 0; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══════════ TOP BAR ══════════ -->
+<div class="topbar">
+    <div class="container">
+        <div class="topbar-contacts">
+            <span>&#128205; г. Актау, 14 мкр, 95</span>
+            <a href="tel:+77292467711">&#128222; +7 (7292) 46-77-11</a>
+            <span>&#128340; Пн-Пт 08:30-17:30</span>
+        </div>
+        <div class="topbar-social">
+            <a href="https://www.instagram.com/neiron_aktau/" target="_blank" rel="noopener">Instagram</a>
+            <a href="https://www.facebook.com/NeironAktau/" target="_blank" rel="noopener">Facebook</a>
+            <a href="https://youtube.com/channel/UC9ijYCI_e_CwaXX9Zrmxgfg" target="_blank" rel="noopener">YouTube</a>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════ HEADER ══════════ -->
+<header class="header">
+    <div class="container">
+        <a href="#" class="logo">
+            <div class="logo-icon">N</div>
+            <div class="logo-text">
+                <h2>НЕЙРОН</h2>
+                <span>Медицинский центр с 1995 г.</span>
+            </div>
+        </a>
+        <nav id="mainNav">
+            <a href="#services">Услуги</a>
+            <a href="#doctors">Врачи</a>
+            <a href="#faq">Обследования</a>
+            <a href="#corporate">Организациям</a>
+            <a href="#schedule">Расписание</a>
+            <a href="#contacts">Контакты</a>
+            <a href="#booking" class="btn-nav">Записаться</a>
+        </nav>
+        <button class="mobile-menu-btn" onclick="document.getElementById('mainNav').classList.toggle('open')" aria-label="Меню">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+    <div class="container">
+        <div>
+            <h1>Ваше здоровье — наш <span>приоритет</span></h1>
+            <p>Многопрофильный медицинский центр в Актау. Современная диагностика, хирургия, терапия и реабилитация. Более 30 лет заботы о вашем здоровье.</p>
+            <div class="hero-buttons">
+                <a href="#booking" class="btn btn-primary" onclick="openModal()">&#128197; Записаться онлайн</a>
+                <a href="tel:+77292467711" class="btn btn-outline">&#128222; Позвонить</a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="num">30+</div>
+                    <div class="label">лет опыта</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num">50+</div>
+                    <div class="label">специалистов</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num">25+</div>
+                    <div class="label">направлений</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num">3</div>
+                    <div class="label">площадки</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-card">
+            <h3>&#9889; Быстрая навигация</h3>
+            <div class="quick-links">
+                <a href="#booking" class="quick-link" onclick="openModal()">
+                    <div class="ql-icon">&#128197;</div>
+                    <div><strong>Онлайн-запись</strong><br><small>Выберите врача и время</small></div>
+                </a>
+                <a href="#faq" class="quick-link">
+                    <div class="ql-icon">&#128269;</div>
+                    <div><strong>Какое обследование мне нужно?</strong><br><small>Помощь в выборе</small></div>
+                </a>
+                <a href="#corporate" class="quick-link">
+                    <div class="ql-icon">&#127970;</div>
+                    <div><strong>Для организаций</strong><br><small>Договорное обслуживание</small></div>
+                </a>
+                <a href="https://damukz.com" class="quick-link" target="_blank" rel="noopener">
+                    <div class="ql-icon">&#128241;</div>
+                    <div><strong>Приложение Damumed</strong><br><small>Запись по ОСМС</small></div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ BOOKING INLINE ══════════ -->
+<div style="margin-top:-40px; position:relative; z-index:10;" id="booking">
+    <div class="booking-section">
+        <div class="grid-2" style="align-items:center;">
+            <div>
+                <h2>&#128197; Запись на прием</h2>
+                <p>Запишитесь онлайн — мы перезвоним для подтверждения. Работает 24/7, даже когда регистратура закрыта.</p>
+            </div>
+            <div>
+                <div class="booking-form" style="grid-template-columns:1fr 1fr;">
+                    <div class="form-group">
+                        <label>Направление</label>
+                        <select id="bookDirection">
+                            <option>Терапия</option>
+                            <option>Хирургия</option>
+                            <option>Офтальмология</option>
+                            <option>УЗИ-диагностика</option>
+                            <option>КТ</option>
+                            <option>Рентген</option>
+                            <option>ФГДС / Колоноскопия</option>
+                            <option>ЛОР</option>
+                            <option>Кардиология</option>
+                            <option>Неврология</option>
+                            <option>Урология</option>
+                            <option>Гинекология</option>
+                            <option>Дерматология</option>
+                            <option>Стоматология</option>
+                            <option>Реабилитация</option>
+                            <option>Профосмотр</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Тип приема</label>
+                        <select id="bookType">
+                            <option>Платный прием</option>
+                            <option>ОСМС (бесплатный)</option>
+                            <option>Договор с организацией</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn-book" style="width:100%; margin-top:14px;" onclick="openModal()">Записаться &#8594;</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════ SERVICES ══════════ -->
+<section id="services">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">Наши услуги</div>
+            <h2>Более 25 направлений медицины</h2>
+            <p>Полный спектр медицинских услуг — от диагностики до высокотехнологичной хирургии</p>
+        </div>
+        <div class="grid-4">
+            <a href="https://neironclinic.kz/terapiya/" class="service-card" target="_blank" rel="noopener">
+                <div class="service-icon" style="background:#fef3c7;">&#129658;</div>
+                <h3>Терапия</h3>
+                <p>Многопрофильная терапия, кардиология, эндокринология, гастроэнтерология</p>
+            </a>
+            <a href="https://neironclinic.kz/plasticheskaya-hirurgiya/" class="service-card" target="_blank" rel="noopener">
+                <div class="service-icon" style="background:#fee2e2;">&#9879;</div>
+                <h3>Хирургия</h3>
+                <p>Общая, пластическая, нейро-, онко-хирургия, проктология, урология</p>
+            </a>
+            <a href="https://neironclinic.kz/otdelenie-mikrohirurgii-glaza/" class="service-card" target="_blank" rel="noopener">
+                <div class="service-icon" style="background:#dbeafe;">&#128065;</div>
+                <h3>Офтальмология</h3>
+                <p>Микрохирургия глаза для детей и взрослых</p>
+            </a>
+            <a href="https://neironclinic.kz/kliniko-diagnosticheskij-czentr/" class="service-card" target="_blank" rel="noopener">
+                <div class="service-icon" style="background:#e0f5f8;">&#128300;</div>
+                <h3>Лаборатория</h3>
+                <p>Клинико-диагностический центр, все виды анализов</p>
+            </a>
+            <a href="https://neironclinic.kz/uzi-diagnostika/" class="service-card" target="_blank" rel="noopener">
+                <div class="service-icon" style="background:#f3e8ff;">&#128225;</div>
+                <h3>УЗИ-диагностика</h3>
+                <p>Ультразвуковое исследование всех органов и систем</p>
+            </a>
+            <a href="https://neironclinic.kz/%D0%BA%D0%BE%D0%BC%D0%BF%D1%8C%D1%8E%D1%82%D0%B5%D1%80%D0%BD%D0%B0%D1%8F-%D1%82%D0%BE%D0%BC%D0%BE%D0%B3%D1%80%D0%B0%D1%84%D0%B8%D1%8F/" class="service-card" target="_blank" rel="noopener">
+                <div class="service-icon" style="background:#fce7f3;">&#129520;</div>
+                <h3>КТ / Рентген</h3>
+                <p>Компьютерная томография, рентген и флюорография</p>
+            </a>
+            <a href="https://neironclinic.kz/video-gastro-kolonoskopiya/" class="service-card" target="_blank" rel="noopener">
+                <div class="service-icon" style="background:#dcfce7;">&#127981;</div>
+                <h3>Эндоскопия</h3>
+                <p>Видео-ФГДС, колоноскопия, определение H. pylori</p>
+            </a>
+            <a href="https://neironclinic.kz/reabilitacziya/" class="service-card" target="_blank" rel="noopener">
+                <div class="service-icon" style="background:#fff7ed;">&#129464;</div>
+                <h3>Реабилитация</h3>
+                <p>Восстановительное лечение детей и взрослых, физиотерапия</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ FAQ NAVIGATOR ══════════ -->
+<section class="faq-section" id="faq">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">Навигатор обследований</div>
+            <h2>Какое обследование мне нужно?</h2>
+            <p>Пациенты часто путают процедуры. Мы поможем выбрать правильное обследование по вашим симптомам</p>
+        </div>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <div class="faq-question">Болит желудок, хочу проверить</div>
+                <div class="faq-answer">
+                    <p>Для обследования желудка нужна <strong>ФГДС (фиброгастродуоденоскопия)</strong> — это эндоскопическое исследование через рот. УЗИ желудок не покажет. Перед процедурой нужно прийти натощак.</p>
+                    <span class="faq-tag tag-purple">&#128073; Записаться на ФГДС</span>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Хочу проверить щитовидную железу</div>
+                <div class="faq-answer">
+                    <p>Щитовидную железу проверяют на <strong>УЗИ</strong> + <strong>анализы крови на гормоны</strong> (ТТГ, Т3, Т4). ФГДС или рентген здесь не нужны. Для начала запишитесь к эндокринологу или на УЗИ щитовидной железы.</p>
+                    <span class="faq-tag tag-blue">&#128073; Записаться на УЗИ</span>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Нужно проверить кишечник</div>
+                <div class="faq-answer">
+                    <p>Кишечник исследуется через <strong>колоноскопию</strong> — эндоскопическое обследование толстого кишечника. УЗИ кишечник не покажет. Требуется подготовка за 2-3 дня. Запишитесь к гастроэнтерологу для направления.</p>
+                    <span class="faq-tag tag-purple">&#128073; Записаться на колоноскопию</span>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">В чем разница между УЗИ, рентгеном и КТ?</div>
+                <div class="faq-answer">
+                    <p><strong>УЗИ</strong> — ультразвук, без облучения. Показывает мягкие ткани: печень, почки, щитовидку, сосуды.<br>
+                    <strong>Рентген</strong> — лучевая диагностика. Показывает кости, легкие.<br>
+                    <strong>КТ</strong> — детальное 3D-сканирование. Показывает все органы послойно. Назначается врачом при сложных случаях.</p>
+                    <span class="faq-tag tag-green">&#128073; Уточнить у терапевта</span>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Болит сердце / давление скачет</div>
+                <div class="faq-answer">
+                    <p>Начните с <strong>ЭКГ</strong> и <strong>консультации кардиолога</strong>. При необходимости назначат <strong>Холтеровское мониторирование</strong> (ЭКГ за 24 часа), <strong>УЗИ сердца (ЭхоКГ)</strong> или <strong>велоэргометрию</strong> (нагрузочный тест).</p>
+                    <span class="faq-tag tag-orange">&#128073; Записаться к кардиологу</span>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Ребенку нужен осмотр / прививка</div>
+                <div class="faq-answer">
+                    <p>Запишитесь к <strong>педиатру</strong>. Также доступны: детский невролог, детский хирург, детский офтальмолог. Если ребенок застрахован по ОСМС — прием бесплатный при прикреплении.</p>
+                    <span class="faq-tag tag-green">&#128073; Записаться к педиатру</span>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Нужен профосмотр для работы</div>
+                <div class="faq-answer">
+                    <p><strong>Отделение профилактических осмотров</strong> проводит предварительные и периодические медосмотры для организаций. Включает: терапевта, окулиста, ЛОР, невролога, ЭКГ, анализы, флюорографию.</p>
+                    <span class="faq-tag tag-orange">&#128073; Отдел профосмотров: 42-80-52</span>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Как записаться бесплатно по ОСМС?</div>
+                <div class="faq-answer">
+                    <p>По ОСМС можно записаться через <strong>приложение Damumed</strong> или позвонив в регистратуру <strong>46-77-11</strong>. Вы должны быть прикреплены к МЦ «Нейрон». Если прикреплены к другой поликлинике — попросите направление (соисполнение через ФОБС).</p>
+                    <span class="faq-tag tag-blue">&#128073; Скачать Damumed</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ DOCTORS ══════════ -->
+<section id="doctors">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">Наши специалисты</div>
+            <h2>Более 50 врачей-профессионалов</h2>
+            <p>Все врачи — специалисты высшей и первой категории с многолетним опытом</p>
+        </div>
+        <div class="grid-4">
+            <div class="doctor-card">
+                <div class="doctor-avatar">&#9879;</div>
+                <h4>Шайхиев Е.У.</h4>
+                <div class="specialty">Хирург-онколог</div>
+                <div class="category">Д.м.н., высшая категория</div>
+            </div>
+            <div class="doctor-card">
+                <div class="doctor-avatar">&#128065;</div>
+                <h4>Саргожаев И.К.</h4>
+                <div class="specialty">Офтальмолог</div>
+                <div class="category">Зав. отделением микрохирургии глаза</div>
+            </div>
+            <div class="doctor-card">
+                <div class="doctor-avatar">&#129658;</div>
+                <h4>Ержанова Г.С.</h4>
+                <div class="specialty">Терапевт</div>
+                <div class="category">Зав. отделением терапии</div>
+            </div>
+            <div class="doctor-card">
+                <div class="doctor-avatar">&#9879;</div>
+                <h4>Ким А.В.</h4>
+                <div class="specialty">Онколог, маммолог</div>
+                <div class="category">Зав. хирургией, высшая категория</div>
+            </div>
+            <div class="doctor-card">
+                <div class="doctor-avatar">&#128300;</div>
+                <h4>Файзуллина Д.К.</h4>
+                <div class="specialty">Врач УЗИ</div>
+                <div class="category">Высшая категория</div>
+            </div>
+            <div class="doctor-card">
+                <div class="doctor-avatar">&#129658;</div>
+                <h4>Наурызова А.Ш.</h4>
+                <div class="specialty">Гастроэнтеролог</div>
+                <div class="category">Инфекционист, гепатолог</div>
+            </div>
+            <div class="doctor-card">
+                <div class="doctor-avatar">&#128149;</div>
+                <h4>Колобова И.В.</h4>
+                <div class="specialty">Кардиолог</div>
+                <div class="category">Холтер, СМАД</div>
+            </div>
+            <div class="doctor-card">
+                <div class="doctor-avatar">&#9879;</div>
+                <h4>Дуйсеков А.Т.</h4>
+                <div class="specialty">ЛОР-хирург</div>
+                <div class="category">Магистр медицинских наук</div>
+            </div>
+        </div>
+        <div class="text-center" style="margin-top:30px;">
+            <a href="https://neironclinic.kz/speczialisty/" class="btn btn-outline" style="color:var(--primary); border-color:var(--primary);" target="_blank" rel="noopener">Все специалисты &#8594;</a>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ CORPORATE ══════════ -->
+<section class="corp-section" id="corporate">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">Для организаций</div>
+            <h2>Договорное обслуживание</h2>
+            <p>Обслуживаем крупнейшие предприятия Мангистауской области с 1995 года</p>
+        </div>
+        <div class="grid-2">
+            <div class="corp-card">
+                <h3>&#127970; Что мы предлагаем</h3>
+                <div class="corp-features">
+                    <div class="corp-feature">
+                        <div class="corp-feature-icon">&#128203;</div>
+                        <div>
+                            <h4>Предварительные и периодические медосмотры</h4>
+                            <p>Полный цикл профосмотров для допуска к работе</p>
+                        </div>
+                    </div>
+                    <div class="corp-feature">
+                        <div class="corp-feature-icon">&#128101;</div>
+                        <div>
+                            <h4>Обслуживание сотрудников и семей</h4>
+                            <p>До 3 членов семьи на каждого сотрудника. Обновление списков по email</p>
+                        </div>
+                    </div>
+                    <div class="corp-feature">
+                        <div class="corp-feature-icon">&#128202;</div>
+                        <div>
+                            <h4>Отчетность и аналитика</h4>
+                            <p>Ежемесячные отчеты, контроль посещаемости, реестры прикрепленных</p>
+                        </div>
+                    </div>
+                    <div class="corp-feature">
+                        <div class="corp-feature-icon">&#128222;</div>
+                        <div>
+                            <h4>Выделенные линии связи</h4>
+                            <p>Отдельные номера для сотрудников договорных организаций</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="corp-card">
+                <h3>&#129309; Наши партнеры</h3>
+                <p style="color:var(--text-light); font-size:14px; margin-top:8px;">Крупнейшие предприятия нефтегазового и транспортного сектора:</p>
+                <div class="corp-logos">
+                    <div class="corp-logo">&#9981; УзеньМунайГаз</div>
+                    <div class="corp-logo">&#9981; КазМунайГаз</div>
+                    <div class="corp-logo">&#128666; Монай Логистик Воскар Маса</div>
+                    <div class="corp-logo">&#128666; ПРЦ Автоколонна</div>
+                    <div class="corp-logo">&#127981; АТС</div>
+                    <div class="corp-logo">&#127981; ТМС</div>
+                </div>
+                <div style="margin-top:24px; padding:20px; background:var(--primary-light); border-radius:12px;">
+                    <h4 style="font-size:15px; margin-bottom:8px;">&#128233; Заключить договор</h4>
+                    <p style="font-size:13px; color:var(--text-light); margin-bottom:4px;">Отдел договоров: <a href="tel:+77014006655" style="color:var(--primary); font-weight:600;">+7 (701) 400-66-55</a></p>
+                    <p style="font-size:13px; color:var(--text-light);">Email: <a href="mailto:info@neironclinic.kz" style="color:var(--primary); font-weight:600;">info@neironclinic.kz</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ SCHEDULE ══════════ -->
+<section id="schedule">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">Расписание</div>
+            <h2>График работы отделений</h2>
+        </div>
+        <table class="schedule-table">
+            <thead>
+                <tr>
+                    <th>Отделение</th>
+                    <th>Пн-Пт</th>
+                    <th>Суббота</th>
+                    <th>Воскресенье</th>
+                    <th>Телефон</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Регистратура (колл-центр)</strong></td>
+                    <td><span class="time-badge">08:30 — 17:30</span></td>
+                    <td><span class="time-badge closed">выходной</span></td>
+                    <td><span class="time-badge closed">выходной</span></td>
+                    <td>46-77-11</td>
+                </tr>
+                <tr>
+                    <td><strong>Терапия</strong></td>
+                    <td><span class="time-badge">08:00 — 20:00</span></td>
+                    <td><span class="time-badge">08:00 — 20:00</span></td>
+                    <td><span class="time-badge closed">выходной</span></td>
+                    <td>46-77-11</td>
+                </tr>
+                <tr>
+                    <td><strong>Хирургия</strong></td>
+                    <td><span class="time-badge">09:00 — 18:00</span></td>
+                    <td><span class="time-badge">09:00 — 13:00</span></td>
+                    <td><span class="time-badge closed">выходной</span></td>
+                    <td>31-22-25</td>
+                </tr>
+                <tr>
+                    <td><strong>Диагностический центр</strong></td>
+                    <td><span class="time-badge">09:00 — 18:00</span></td>
+                    <td><span class="time-badge">09:00 — 13:00</span></td>
+                    <td><span class="time-badge closed">выходной</span></td>
+                    <td>46-77-11</td>
+                </tr>
+                <tr>
+                    <td><strong>Микрохирургия глаза</strong></td>
+                    <td><span class="time-badge">09:00 — 20:00</span></td>
+                    <td><span class="time-badge">09:00 — 13:00</span></td>
+                    <td><span class="time-badge closed">выходной</span></td>
+                    <td>34-34-64</td>
+                </tr>
+                <tr>
+                    <td><strong>Реабилитация</strong></td>
+                    <td><span class="time-badge">09:00 — 17:00</span></td>
+                    <td><span class="time-badge closed">выходной</span></td>
+                    <td><span class="time-badge closed">выходной</span></td>
+                    <td>31-02-00</td>
+                </tr>
+                <tr>
+                    <td><strong>Профосмотры</strong></td>
+                    <td><span class="time-badge">09:00 — 17:00</span></td>
+                    <td><span class="time-badge">09:00 — 13:00</span></td>
+                    <td><span class="time-badge closed">выходной</span></td>
+                    <td>42-80-52</td>
+                </tr>
+                <tr>
+                    <td><strong>Поликлиника (корп. 5)</strong></td>
+                    <td><span class="time-badge">09:00 — 17:00</span></td>
+                    <td><span class="time-badge">09:00 — 13:00</span></td>
+                    <td><span class="time-badge closed">выходной</span></td>
+                    <td>33-09-37</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ══════════ WORKFLOW BANNER ══════════ -->
+<section style="padding:40px 0;">
+    <div class="workflow-banner">
+        <div>
+            <h3>&#128196; Документация КМИС Damumed</h3>
+            <p>Внутренняя логика работы регистратуры, типы приема, управление договорными организациями</p>
+        </div>
+        <a href="kmis_workflow.html" class="btn-workflow">Открыть документацию &#8594;</a>
+    </div>
+</section>
+
+<!-- ══════════ CONTACTS ══════════ -->
+<section id="contacts" style="background:var(--white);">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">Контакты</div>
+            <h2>Свяжитесь с нами</h2>
+        </div>
+        <div class="contact-cards">
+            <div class="contact-card">
+                <h4>&#127970; 14 микрорайон (основной)</h4>
+                <p>г. Актау, 14 мкр, 95</p>
+                <a href="tel:+77292467711">&#128222; +7 (7292) 46-77-11</a>
+                <a href="tel:+77754248525">&#128241; +7 (775) 424-85-25</a>
+                <p>Колл-центр, платные услуги</p>
+            </div>
+            <div class="contact-card">
+                <h4>&#127979; Корпус 5 (Поликлиника)</h4>
+                <a href="tel:+77292330937">&#128222; +7 (7292) 33-09-37</a>
+                <a href="tel:+77292333312">&#128222; +7 (7292) 33-33-12</a>
+                <p>Договорные организации, платный прием</p>
+            </div>
+            <div class="contact-card">
+                <h4>&#128233; Отдел договоров</h4>
+                <a href="tel:+77014006655">&#128222; +7 (701) 400-66-55</a>
+                <a href="mailto:info@neironclinic.kz">&#9993; info@neironclinic.kz</a>
+                <p>Заключение договоров с организациями</p>
+            </div>
+            <div class="contact-card">
+                <h4>&#128694; Вызов врача на дом</h4>
+                <a href="tel:+77789154530">&#128222; +7 (778) 915-45-30</a>
+                <p>Вызов терапевта на дом</p>
+            </div>
+            <div class="contact-card">
+                <h4>&#9981; Для сотрудников УМГ</h4>
+                <a href="tel:+77788491829">&#128222; +7 (778) 849-18-29</a>
+                <p>Выделенная линия для УзеньМунайГаз</p>
+            </div>
+            <div class="contact-card">
+                <h4>&#128188; Приемная директора</h4>
+                <a href="tel:+77292428040">&#128222; +7 (7292) 42-80-40</a>
+                <p>Вопросы руководству клиники</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div>
+                <h4>МЦ «Нейрон»</h4>
+                <p>Многопрофильный медицинский центр в г. Актау. Работаем с 1995 года. Лицензированная медицинская деятельность по 25+ направлениям.</p>
+                <p style="margin-top:12px;">
+                    <a href="https://www.instagram.com/neiron_aktau/" target="_blank" rel="noopener">Instagram</a> &nbsp;|&nbsp;
+                    <a href="https://www.facebook.com/NeironAktau/" target="_blank" rel="noopener">Facebook</a> &nbsp;|&nbsp;
+                    <a href="https://youtube.com/channel/UC9ijYCI_e_CwaXX9Zrmxgfg" target="_blank" rel="noopener">YouTube</a>
+                </p>
+            </div>
+            <div>
+                <h4>Направления</h4>
+                <a href="https://neironclinic.kz/terapiya/" target="_blank" rel="noopener">Терапия</a>
+                <a href="https://neironclinic.kz/plasticheskaya-hirurgiya/" target="_blank" rel="noopener">Хирургия</a>
+                <a href="https://neironclinic.kz/otdelenie-mikrohirurgii-glaza/" target="_blank" rel="noopener">Офтальмология</a>
+                <a href="https://neironclinic.kz/uzi-diagnostika/" target="_blank" rel="noopener">УЗИ-диагностика</a>
+                <a href="https://neironclinic.kz/reabilitacziya/" target="_blank" rel="noopener">Реабилитация</a>
+            </div>
+            <div>
+                <h4>Пациентам</h4>
+                <a href="#faq">Навигатор обследований</a>
+                <a href="#booking" onclick="openModal()">Онлайн-запись</a>
+                <a href="#schedule">Расписание</a>
+                <a href="https://neironclinic.kz/price2022/" target="_blank" rel="noopener">Прейскурант</a>
+                <a href="https://neironclinic.kz/otzyvy/" target="_blank" rel="noopener">Отзывы</a>
+            </div>
+            <div>
+                <h4>Контакты</h4>
+                <p>г. Актау, 14 мкр, 95</p>
+                <a href="tel:+77292467711">+7 (7292) 46-77-11</a>
+                <a href="mailto:info@neironclinic.kz">info@neironclinic.kz</a>
+                <p style="margin-top:12px; font-size:13px;">Пн-Пт: 08:30 — 17:30</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 МЦ «Нейрон». Все права защищены. | <a href="https://neironclinic.kz">neironclinic.kz</a>
+        </div>
+    </div>
+</footer>
+
+<!-- ══════════ WHATSAPP BUTTON ══════════ -->
+<a href="https://wa.me/77754248525?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B0%D1%82%D1%8C%D1%81%D1%8F%20%D0%BD%D0%B0%20%D0%BF%D1%80%D0%B8%D0%B5%D0%BC" class="whatsapp-float" target="_blank" rel="noopener" aria-label="WhatsApp">
+    &#128172;
+    <span class="whatsapp-tooltip">Написать в WhatsApp</span>
+</a>
+
+<!-- ══════════ MODAL ══════════ -->
+<div class="modal-overlay" id="bookingModal" onclick="if(event.target===this)closeModal()">
+    <div class="modal" style="position:relative;">
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+        <h3>&#128197; Онлайн-запись на прием</h3>
+        <p>Заполните форму — мы перезвоним для подтверждения в рабочее время.</p>
+        <div class="form-group">
+            <label>Ваше имя *</label>
+            <input type="text" placeholder="Фамилия Имя Отчество" required>
+        </div>
+        <div class="form-group">
+            <label>Телефон *</label>
+            <input type="tel" placeholder="+7 (___) ___-__-__" required>
+        </div>
+        <div class="form-group">
+            <label>ИИН (для ОСМС / договорных)</label>
+            <input type="text" placeholder="12 цифр" maxlength="12">
+        </div>
+        <div class="form-group">
+            <label>Направление</label>
+            <select>
+                <option>Терапия</option>
+                <option>Хирургия</option>
+                <option>Офтальмология</option>
+                <option>УЗИ-диагностика</option>
+                <option>КТ / Рентген</option>
+                <option>ФГДС / Колоноскопия</option>
+                <option>ЛОР</option>
+                <option>Кардиология</option>
+                <option>Неврология</option>
+                <option>Урология</option>
+                <option>Гинекология</option>
+                <option>Дерматология</option>
+                <option>Стоматология</option>
+                <option>Реабилитация</option>
+                <option>Профосмотр</option>
+                <option>Другое</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Тип приема</label>
+            <select>
+                <option>Платный прием</option>
+                <option>ОСМС (бесплатный)</option>
+                <option>Договор с организацией</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Комментарий</label>
+            <textarea placeholder="Опишите жалобы или укажите желаемого врача..."></textarea>
+        </div>
+        <button class="btn-submit" onclick="submitBooking()">Отправить заявку</button>
+        <p style="font-size:12px; color:var(--text-light); margin-top:12px; text-align:center;">Нажимая кнопку, вы соглашаетесь на обработку персональных данных</p>
+    </div>
+</div>
+
+<script>
+// FAQ accordion
+document.querySelectorAll('.faq-question').forEach(q => {
+    q.addEventListener('click', () => {
+        const item = q.parentElement;
+        const wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!wasOpen) item.classList.add('open');
+    });
+});
+
+// Modal
+function openModal() {
+    document.getElementById('bookingModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+    document.getElementById('bookingModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Booking submit (demo)
+function submitBooking() {
+    alert('Спасибо! Ваша заявка принята. Мы перезвоним вам в ближайшее рабочее время для подтверждения записи.');
+    closeModal();
+}
+
+// Mobile menu close on link click
+document.querySelectorAll('#mainNav a').forEach(a => {
+    a.addEventListener('click', () => {
+        document.getElementById('mainNav').classList.remove('open');
+    });
+});
+
+// Smooth scroll offset for sticky header
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+        const href = a.getAttribute('href');
+        if (href === '#') return;
+        const target = document.querySelector(href);
+        if (target) {
+            e.preventDefault();
+            const offset = 80;
+            window.scrollTo({ top: target.offsetTop - offset, behavior: 'smooth' });
+        }
+    });
+});
+</script>
+
+</body>
+</html>
