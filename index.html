@@ -242,10 +242,14 @@
         }
         .doctor-card:hover { transform:translateY(-4px); box-shadow: var(--shadow-lg); }
         .doctor-avatar {
-            width:80px; height:80px; border-radius:50%;
+            width:90px; height:90px; border-radius:50%;
             background: linear-gradient(135deg, var(--primary-light), #b2ebf2);
             display:flex; align-items:center; justify-content:center;
             margin: 0 auto 14px; font-size:28px; color: var(--primary);
+            overflow:hidden;
+        }
+        .doctor-avatar img {
+            width:100%; height:100%; object-fit:cover;
         }
         .doctor-card h4 { font-size:15px; font-weight:700; margin-bottom:4px; }
         .doctor-card .specialty { font-size:13px; color:var(--primary); font-weight:500; }
@@ -402,6 +406,64 @@
             background:none; border:none; font-size:24px; cursor:pointer; color:var(--text-light);
         }
 
+        /* ── GALLERY ── */
+        .gallery-section { background: var(--white); }
+        .gallery-grid {
+            display:grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: auto auto;
+            gap:16px;
+        }
+        .gallery-item {
+            border-radius: var(--radius);
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.4s;
+        }
+        .gallery-item:hover { transform:scale(1.02); box-shadow: var(--shadow-lg); }
+        .gallery-item img {
+            width:100%; height:100%; object-fit:cover; display:block;
+            transition: transform 0.5s;
+        }
+        .gallery-item:hover img { transform:scale(1.08); }
+        .gallery-item.tall { grid-row: span 2; }
+        .gallery-item.wide { grid-column: span 2; }
+        .gallery-overlay {
+            position:absolute; bottom:0; left:0; right:0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.6));
+            color:#fff; padding:16px 20px;
+            font-size:14px; font-weight:600;
+            opacity:0; transition: opacity 0.3s;
+        }
+        .gallery-item:hover .gallery-overlay { opacity:1; }
+
+        /* ── TRUST STRIP ── */
+        .trust-strip {
+            background: var(--white);
+            padding: 60px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .trust-grid { display:grid; grid-template-columns: repeat(4,1fr); gap:32px; }
+        .trust-item { text-align:center; }
+        .trust-img {
+            width:100%; height:200px; border-radius:var(--radius);
+            object-fit:cover; margin-bottom:14px;
+            box-shadow: var(--shadow);
+        }
+        .trust-item h4 { font-size:16px; font-weight:700; margin-bottom:4px; }
+        .trust-item p { font-size:13px; color:var(--text-light); }
+
+        /* ── HERO IMAGE ── */
+        .hero-image {
+            border-radius:20px;
+            overflow:hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-height: 420px;
+        }
+        .hero-image img { width:100%; height:100%; object-fit:cover; display:block; }
+
         /* ── RESPONSIVE ── */
         @media (max-width:1024px) {
             .hero .container { grid-template-columns:1fr; }
@@ -419,7 +481,8 @@
             .hero h1 { font-size:28px; }
             .hero-stats { gap:20px; }
             .hero-stat .num { font-size:26px; }
-            .grid-2, .grid-3, .grid-4, .faq-grid { grid-template-columns:1fr; }
+            .grid-2, .grid-3, .grid-4, .faq-grid, .gallery-grid, .trust-grid { grid-template-columns:1fr; }
+            .gallery-item.tall, .gallery-item.wide { grid-row:auto; grid-column:auto; }
             .booking-section { padding:30px 20px; margin:0 10px; }
             .booking-form { grid-template-columns:1fr; }
             .contact-cards { grid-template-columns:1fr; }
@@ -501,26 +564,8 @@
                 </div>
             </div>
         </div>
-        <div class="hero-card">
-            <h3>&#9889; Быстрая навигация</h3>
-            <div class="quick-links">
-                <a href="#booking" class="quick-link" onclick="openModal()">
-                    <div class="ql-icon">&#128197;</div>
-                    <div><strong>Онлайн-запись</strong><br><small>Выберите врача и время</small></div>
-                </a>
-                <a href="#faq" class="quick-link">
-                    <div class="ql-icon">&#128269;</div>
-                    <div><strong>Какое обследование мне нужно?</strong><br><small>Помощь в выборе</small></div>
-                </a>
-                <a href="#corporate" class="quick-link">
-                    <div class="ql-icon">&#127970;</div>
-                    <div><strong>Для организаций</strong><br><small>Договорное обслуживание</small></div>
-                </a>
-                <a href="https://damukz.com" class="quick-link" target="_blank" rel="noopener">
-                    <div class="ql-icon">&#128241;</div>
-                    <div><strong>Приложение Damumed</strong><br><small>Запись по ОСМС</small></div>
-                </a>
-            </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80" alt="Современная клиника">
         </div>
     </div>
 </section>
@@ -624,6 +669,39 @@
     </div>
 </section>
 
+<!-- ══════════ TRUST STRIP ══════════ -->
+<div class="trust-strip">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">Наша клиника</div>
+            <h2>Забота о каждом пациенте</h2>
+            <p>Комфортная атмосфера, современное оборудование и внимательный персонал</p>
+        </div>
+        <div class="trust-grid">
+            <div class="trust-item">
+                <img class="trust-img" src="https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=500&q=80" alt="Врач с пациентом">
+                <h4>Индивидуальный подход</h4>
+                <p>Каждый пациент получает персональное внимание врача</p>
+            </div>
+            <div class="trust-item">
+                <img class="trust-img" src="https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?w=500&q=80" alt="Детская медицина">
+                <h4>Детское отделение</h4>
+                <p>Педиатрия, детская неврология, хирургия и офтальмология</p>
+            </div>
+            <div class="trust-item">
+                <img class="trust-img" src="https://images.unsplash.com/photo-1551190822-a9ce113ac100?w=500&q=80" alt="Современное оборудование">
+                <h4>Современное оборудование</h4>
+                <p>КТ, УЗИ, эндоскопия, лаборатория мирового уровня</p>
+            </div>
+            <div class="trust-item">
+                <img class="trust-img" src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=500&q=80" alt="Команда врачей">
+                <h4>Команда профессионалов</h4>
+                <p>Более 50 врачей высшей и первой категории</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- ══════════ FAQ NAVIGATOR ══════════ -->
 <section class="faq-section" id="faq">
     <div class="container">
@@ -705,49 +783,49 @@
         </div>
         <div class="grid-4">
             <div class="doctor-card">
-                <div class="doctor-avatar">&#9879;</div>
+                <div class="doctor-avatar"><img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=200&q=80" alt="Шайхиев Е.У."></div>
                 <h4>Шайхиев Е.У.</h4>
                 <div class="specialty">Хирург-онколог</div>
                 <div class="category">Д.м.н., высшая категория</div>
             </div>
             <div class="doctor-card">
-                <div class="doctor-avatar">&#128065;</div>
+                <div class="doctor-avatar"><img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&q=80" alt="Саргожаев И.К."></div>
                 <h4>Саргожаев И.К.</h4>
                 <div class="specialty">Офтальмолог</div>
                 <div class="category">Зав. отделением микрохирургии глаза</div>
             </div>
             <div class="doctor-card">
-                <div class="doctor-avatar">&#129658;</div>
+                <div class="doctor-avatar"><img src="https://images.unsplash.com/photo-1594824476967-48c8b964ac31?w=200&q=80" alt="Ержанова Г.С."></div>
                 <h4>Ержанова Г.С.</h4>
                 <div class="specialty">Терапевт</div>
                 <div class="category">Зав. отделением терапии</div>
             </div>
             <div class="doctor-card">
-                <div class="doctor-avatar">&#9879;</div>
+                <div class="doctor-avatar"><img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=200&q=80" alt="Ким А.В."></div>
                 <h4>Ким А.В.</h4>
                 <div class="specialty">Онколог, маммолог</div>
                 <div class="category">Зав. хирургией, высшая категория</div>
             </div>
             <div class="doctor-card">
-                <div class="doctor-avatar">&#128300;</div>
+                <div class="doctor-avatar"><img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&q=80" alt="Файзуллина Д.К."></div>
                 <h4>Файзуллина Д.К.</h4>
                 <div class="specialty">Врач УЗИ</div>
                 <div class="category">Высшая категория</div>
             </div>
             <div class="doctor-card">
-                <div class="doctor-avatar">&#129658;</div>
+                <div class="doctor-avatar"><img src="https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=200&q=80" alt="Наурызова А.Ш."></div>
                 <h4>Наурызова А.Ш.</h4>
                 <div class="specialty">Гастроэнтеролог</div>
                 <div class="category">Инфекционист, гепатолог</div>
             </div>
             <div class="doctor-card">
-                <div class="doctor-avatar">&#128149;</div>
+                <div class="doctor-avatar"><img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=200&q=80" alt="Колобова И.В."></div>
                 <h4>Колобова И.В.</h4>
                 <div class="specialty">Кардиолог</div>
                 <div class="category">Холтер, СМАД</div>
             </div>
             <div class="doctor-card">
-                <div class="doctor-avatar">&#9879;</div>
+                <div class="doctor-avatar"><img src="https://images.unsplash.com/photo-1618498082410-b4aa22193b38?w=200&q=80" alt="Дуйсеков А.Т."></div>
                 <h4>Дуйсеков А.Т.</h4>
                 <div class="specialty">ЛОР-хирург</div>
                 <div class="category">Магистр медицинских наук</div>
@@ -909,6 +987,51 @@
             <p>Внутренняя логика работы регистратуры, типы приема, управление договорными организациями</p>
         </div>
         <a href="kmis_workflow.html" class="btn-workflow">Открыть документацию &#8594;</a>
+    </div>
+</section>
+
+<!-- ══════════ GALLERY ══════════ -->
+<section class="gallery-section" id="gallery">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">Фотогалерея</div>
+            <h2>Наша клиника в лицах</h2>
+            <p>Счастливые пациенты, заботливые врачи и современные условия</p>
+        </div>
+        <div class="gallery-grid">
+            <div class="gallery-item tall">
+                <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&q=80" alt="Врач улыбается" loading="lazy">
+                <div class="gallery-overlay">Профессиональная команда</div>
+            </div>
+            <div class="gallery-item wide">
+                <img src="https://images.unsplash.com/photo-1666214280557-f1b5022eb634?w=800&q=80" alt="Счастливая семья в клинике" loading="lazy">
+                <div class="gallery-overlay">Забота о всей семье</div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=500&q=80" alt="Лаборатория" loading="lazy">
+                <div class="gallery-overlay">Современная лаборатория</div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1581056771107-24ca5f033842?w=500&q=80" alt="Врач с ребенком" loading="lazy">
+                <div class="gallery-overlay">Детское отделение</div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=500&q=80" alt="Здание клиники" loading="lazy">
+                <div class="gallery-overlay">Медицинский центр</div>
+            </div>
+            <div class="gallery-item wide">
+                <img src="https://images.unsplash.com/photo-1504439468489-c8920d796a29?w=800&q=80" alt="Операционная" loading="lazy">
+                <div class="gallery-overlay">Высокотехнологичная хирургия</div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=500&q=80" alt="Пациент доволен" loading="lazy">
+                <div class="gallery-overlay">Счастливые пациенты</div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=500&q=80" alt="Стоматология" loading="lazy">
+                <div class="gallery-overlay">Стоматология</div>
+            </div>
+        </div>
     </div>
 </section>
 
