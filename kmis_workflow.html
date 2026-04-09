@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>КМИС Damumed — Логика работы регистратуры | МЦ «Нейрон»</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            color: #1a1a2e;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        header {
+            background: linear-gradient(135deg, #0f4c81, #1a73e8);
+            color: #fff;
+            padding: 30px 40px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+        header h1 { font-size: 28px; margin-bottom: 8px; }
+        header p { opacity: 0.85; font-size: 15px; }
+
+        /* --- Section --- */
+        .section {
+            background: #fff;
+            border-radius: 14px;
+            padding: 28px 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title .icon {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        /* --- Step card --- */
+        .step {
+            background: #f7f9fc;
+            border-left: 4px solid #1a73e8;
+            border-radius: 0 10px 10px 0;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        .step.warning {
+            border-left-color: #e8a71a;
+            background: #fffdf5;
+        }
+        .step.error {
+            border-left-color: #e84040;
+            background: #fff7f7;
+        }
+        .step.success {
+            border-left-color: #2ecc71;
+            background: #f5fff8;
+        }
+        .step-number {
+            display: inline-block;
+            background: #1a73e8;
+            color: #fff;
+            width: 26px; height: 26px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 26px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+        .step.warning .step-number { background: #e8a71a; }
+        .step.error .step-number { background: #e84040; }
+        .step.success .step-number { background: #2ecc71; }
+        .step strong { font-size: 15px; }
+        .step p { margin-top: 6px; font-size: 14px; color: #444; }
+
+        /* --- Flow arrow --- */
+        .flow-arrow {
+            text-align: center;
+            color: #aab;
+            font-size: 22px;
+            margin: 4px 0;
+            user-select: none;
+        }
+
+        /* --- Badge / tag --- */
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 2px 4px 2px 0;
+        }
+        .badge-blue { background: #e3f0ff; color: #1a73e8; }
+        .badge-green { background: #e6f9ee; color: #1b9e4b; }
+        .badge-orange { background: #fff3e0; color: #d47a00; }
+        .badge-red { background: #ffe8e8; color: #c62828; }
+        .badge-purple { background: #f3e8ff; color: #7b1fa2; }
+
+        /* --- Table --- */
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 14px;
+            font-size: 14px;
+        }
+        .info-table th, .info-table td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .info-table th {
+            background: #f0f4f8;
+            font-weight: 600;
+            color: #555;
+        }
+
+        /* --- Branching block --- */
+        .branch {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 14px;
+        }
+        .branch-card {
+            border: 2px solid #dde;
+            border-radius: 12px;
+            padding: 18px;
+        }
+        .branch-card h4 {
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+        .branch-card p, .branch-card li {
+            font-size: 13px;
+            color: #555;
+        }
+        .branch-card ul { padding-left: 18px; margin-top: 6px; }
+        .branch-card.blue { border-color: #1a73e8; }
+        .branch-card.green { border-color: #2ecc71; }
+        .branch-card.orange { border-color: #e8a71a; }
+        .branch-card.purple { border-color: #7b1fa2; }
+
+        /* --- Problem card --- */
+        .problem-card {
+            background: #fff7f0;
+            border: 1px solid #ffd6a5;
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin-bottom: 14px;
+        }
+        .problem-card h4 { color: #c97000; font-size: 15px; margin-bottom: 6px; }
+        .problem-card p { font-size: 14px; color: #665; }
+        .solution {
+            background: #f0fff4;
+            border: 1px solid #a5d6a7;
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+        .solution strong { color: #2e7d32; }
+
+        /* --- Misc --- */
+        .note {
+            background: #eef4ff;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 13px;
+            color: #3366aa;
+            margin-top: 12px;
+        }
+        .divider { border: 0; border-top: 2px dashed #dde; margin: 30px 0; }
+
+        @media (max-width: 700px) {
+            .branch { grid-template-columns: 1fr; }
+            body { padding: 10px; }
+            .section { padding: 18px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ==================== HEADER ==================== -->
+    <header>
+        <h1>КМИС Damumed — Логика работы регистратуры</h1>
+        <p>Медицинский центр «Нейрон» | 14 микрорайон, г. Актау</p>
+        <p style="margin-top:6px; opacity:0.7;">Источник: транскрибация аудиозаписи совещания по рабочим процессам</p>
+    </header>
+
+    <!-- ==================== 1. ВХОД В СИСТЕМУ ==================== -->
+    <div class="section">
+        <div class="section-title">
+            <div class="icon" style="background:#1a73e8;">1</div>
+            Вход в КМИС (Damumed)
+        </div>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <strong>Открыть платформу Damumed</strong>
+            <p>Система доступна через веб-браузер. Каждый сотрудник имеет индивидуальный логин и пароль.</p>
+        </div>
+        <div class="flow-arrow">&darr;</div>
+        <div class="step">
+            <span class="step-number">2</span>
+            <strong>Авторизация</strong>
+            <p>Ввести персональные учетные данные. После входа открываются доступные модули в зависимости от роли сотрудника.</p>
+        </div>
+        <div class="flow-arrow">&darr;</div>
+        <div class="step success">
+            <span class="step-number">3</span>
+            <strong>Выбор модуля «Регистратор»</strong>
+            <p>Основной модуль для записи пациентов. Отображается список врачей с расписанием и доступными слотами.</p>
+        </div>
+    </div>
+
+    <!-- ==================== 2. ТИПЫ ПРИЕМА ==================== -->
+    <div class="section">
+        <div class="section-title">
+            <div class="icon" style="background:#7b1fa2;">2</div>
+            Типы приема пациентов
+        </div>
+
+        <div class="branch">
+            <div class="branch-card green">
+                <h4><span class="badge badge-green">ОСМС</span> Бесплатный прием</h4>
+                <p>Прием по обязательному социальному медицинскому страхованию. Пациенты прикреплены к поликлинике.</p>
+                <ul>
+                    <li>Доступен только у врачей с правом приема по ОСМС</li>
+                    <li>Пациент должен быть прикреплен</li>
+                    <li>Запись возможна самостоятельно через приложение Damumed</li>
+                </ul>
+            </div>
+            <div class="branch-card blue">
+                <h4><span class="badge badge-blue">Платный</span> Платные услуги</h4>
+                <p>Прием на коммерческой основе. Доступен всем пациентам без ограничений.</p>
+                <ul>
+                    <li>Живая очередь или запись</li>
+                    <li>Не требует прикрепления</li>
+                    <li>Оплата на месте</li>
+                </ul>
+            </div>
+            <div class="branch-card orange">
+                <h4><span class="badge badge-orange">Договорной</span> Договорные организации</h4>
+                <p>Обслуживание сотрудников компаний по договору (Узеньмунайгаз, КазМунайГаз, транспортные компании и др.).</p>
+                <ul>
+                    <li>Запись через модуль «Платные услуги &rarr; Договор с организацией»</li>
+                    <li>Списки сотрудников обновляются по почте</li>
+                    <li>У каждого сотрудника до 3 членов семьи</li>
+                </ul>
+            </div>
+            <div class="branch-card purple">
+                <h4><span class="badge badge-purple">Соисполнение</span> Направления из других клиник</h4>
+                <p>Пациенты направляются из других поликлиник через систему ФОБС на бесплатное обследование.</p>
+                <ul>
+                    <li>Запись приходит через КМИС автоматически</li>
+                    <li>Прием по ОСМС</li>
+                    <li>Пациент не прикреплен к «Нейрону»</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 3. ЗАПИСЬ ПАЦИЕНТА ==================== -->
+    <div class="section">
+        <div class="section-title">
+            <div class="icon" style="background:#2ecc71;">3</div>
+            Процесс записи пациента (шаг за шагом)
+        </div>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <strong>Определить тип приема</strong>
+            <p>Уточнить у пациента: ОСМС / платный / договорная организация.</p>
+        </div>
+        <div class="flow-arrow">&darr;</div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <strong>Выбрать врача</strong>
+            <p>Открыть расписание нужного специалиста. Проверить свободные слоты на нужную дату.</p>
+        </div>
+        <div class="flow-arrow">&darr;</div>
+
+        <div class="step warning">
+            <span class="step-number">3</span>
+            <strong>Проверить доступ врача к типу приема</strong>
+            <p>Не все врачи принимают по ОСМС. Например, цеховой врач принимает <strong>только</strong> договорные компании. Если у врача нет доступа по ОСМС — запись невозможна.</p>
+        </div>
+        <div class="flow-arrow">&darr;</div>
+
+        <div class="step">
+            <span class="step-number">4</span>
+            <strong>Выбор категории в КМИС</strong>
+            <p>В зависимости от типа:</p>
+            <table class="info-table">
+                <tr>
+                    <th>Тип приема</th>
+                    <th>Путь в КМИС</th>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-green">ОСМС</span></td>
+                    <td>Регистратор &rarr; Врач &rarr; Запись (по ОСМС)</td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-blue">Платный</span></td>
+                    <td>Регистратор &rarr; Платные услуги &rarr; Терапия / Специалист</td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-orange">Договорной</span></td>
+                    <td>Регистратор &rarr; Платные услуги &rarr; Договор с организацией</td>
+                </tr>
+            </table>
+        </div>
+        <div class="flow-arrow">&darr;</div>
+
+        <div class="step">
+            <span class="step-number">5</span>
+            <strong>Найти пациента по ИИН</strong>
+            <p>Ввести ИИН пациента для поиска в базе. Для договорных — проверить наличие в списке организации.</p>
+        </div>
+        <div class="flow-arrow">&darr;</div>
+
+        <div class="step">
+            <span class="step-number">6</span>
+            <strong>Сохранить запись</strong>
+            <p>Выбрать время, подтвердить. Нажать «Сохранить».</p>
+        </div>
+        <div class="flow-arrow">&darr;</div>
+
+        <div class="step success">
+            <span class="step-number">7</span>
+            <strong>SMS-уведомление пациенту</strong>
+            <p>После сохранения пациенту автоматически приходит уведомление через приложение Damumed (push или SMS).</p>
+        </div>
+
+        <div class="note">
+            <strong>Отмена записи:</strong> Если пациент звонит и хочет отменить — регистратор открывает запись и нажимает «Отменить». Запись удаляется, слот освобождается.
+        </div>
+    </div>
+
+    <!-- ==================== 4. ВРАЧИ И РАСПИСАНИЕ ==================== -->
+    <div class="section">
+        <div class="section-title">
+            <div class="icon" style="background:#e8a71a;">4</div>
+            Врачи и доступ к типам приема
+        </div>
+
+        <table class="info-table">
+            <tr>
+                <th>Врач (пример)</th>
+                <th>Тип приема</th>
+                <th>Примечание</th>
+            </tr>
+            <tr>
+                <td>Цеховой врач (Узинмайкас Рахметулаева)</td>
+                <td><span class="badge badge-orange">Договорной</span></td>
+                <td>Только компания «Узеньмунайгаз». Нет доступа к ОСМС.</td>
+            </tr>
+            <tr>
+                <td>Терапевт (Нурманова)</td>
+                <td>
+                    <span class="badge badge-blue">Платный</span>
+                    <span class="badge badge-orange">Договорной</span>
+                </td>
+                <td>Принимает и платных, и договорных пациентов.</td>
+            </tr>
+            <tr>
+                <td>Терапевт (Друсинбаева)</td>
+                <td><span class="badge badge-green">ОСМС</span></td>
+                <td>Принимает по ОСМС (бесплатно для прикрепленных).</td>
+            </tr>
+            <tr>
+                <td>Узкие специалисты</td>
+                <td>
+                    <span class="badge badge-blue">Платный</span>
+                    <span class="badge badge-orange">Договорной</span>
+                    <span class="badge badge-purple">Соисполнение</span>
+                </td>
+                <td>Запись через регистратуру или соисполнение из других клиник.</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ==================== 5. ДОГОВОРНЫЕ ОРГАНИЗАЦИИ ==================== -->
+    <div class="section">
+        <div class="section-title">
+            <div class="icon" style="background:#e67e22;">5</div>
+            Управление договорными организациями
+        </div>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <strong>Списки сотрудников</strong>
+            <p>У каждой организации ведется список сотрудников (по ИИН). Хранится в Excel / системе. Количество строк: ~4329+ записей (пример: Узеньмунайгаз).</p>
+        </div>
+        <div class="flow-arrow">&darr;</div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <strong>Обновление списков (по почте)</strong>
+            <p>Организация присылает обновления по email:</p>
+            <ul style="margin-top:6px; padding-left:20px; font-size:14px; color:#555;">
+                <li><strong>Новые сотрудники</strong> — добавить в список</li>
+                <li><strong>Переводы</strong> — перевести из одного подразделения в другое</li>
+                <li><strong>Увольнения</strong> — исключить (отметить красным)</li>
+                <li><strong>Возраст 80+</strong> — исключить</li>
+            </ul>
+        </div>
+        <div class="flow-arrow">&darr;</div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <strong>Члены семьи</strong>
+            <p>Каждый сотрудник может прикрепить до <strong>3 членов семьи</strong>. При запросе — добавить в список, присылается информация по почте.</p>
+        </div>
+
+        <div class="note">
+            <strong>Подразделения:</strong> У крупных организаций (Узеньмунайгаз) много подразделений, каждое со своей бухгалтерией. Сотрудников переводят между подразделениями — нужно отслеживать актуальность.
+        </div>
+    </div>
+
+    <!-- ==================== 6. КОЛЛ-ЦЕНТР ==================== -->
+    <div class="section">
+        <div class="section-title">
+            <div class="icon" style="background:#e84040;">6</div>
+            Колл-центр и телефония
+        </div>
+
+        <table class="info-table">
+            <tr><th>Параметр</th><th>Значение</th></tr>
+            <tr><td>Номер колл-центра</td><td><strong>46-77-11</strong></td></tr>
+            <tr><td>Режим работы</td><td>8:00 — 17:00 (после 17:00 телефон отключен)</td></tr>
+            <tr><td>Количество линий</td><td>2 линии (основные)</td></tr>
+            <tr><td>Провайдер</td><td>Казахтелеком</td></tr>
+        </table>
+
+        <div class="problem-card" style="margin-top:18px;">
+            <h4>Проблема: Автоответчик и выбор языка</h4>
+            <p>При звонке на 46-77-11 включается автоответчик с выбором языка:</p>
+            <ul style="padding-left:20px; margin:8px 0; font-size:14px;">
+                <li><strong>Кнопка 1</strong> — Казахский язык</li>
+                <li><strong>Кнопка 2</strong> — Русский язык</li>
+            </ul>
+            <p><span class="badge badge-red">БАГ</span> При нажатии кнопки 2 (русский) — звонок <strong>не поступает</strong> в регистратуру. Звонок проходит только при нажатии кнопки 1 (казахский).</p>
+            <p style="margin-top:8px;">Русскоязычные пациенты выбирают русский &rarr; звонок не доходит &rarr; пациент думает, что никто не отвечает &rarr; теряем пациентов.</p>
+            <div class="solution">
+                <strong>Решение (предложенное):</strong> Убрать автоответчик с выбором языка. Регистраторы отвечают сразу на двух языках: «Салем алейкум / Здравствуйте». Либо настроить определение языка по коду клиента (как в Beeline).
+            </div>
+        </div>
+
+        <div class="problem-card">
+            <h4>Проблема: Нерабочие часы</h4>
+            <p>После 17:00 телефон отключен. Пациенты не могут дозвониться вечером / в выходные.</p>
+            <div class="solution">
+                <strong>Решение (предложенное):</strong> Подключить мобильный номер как дополнительную линию и оставлять его включённым 24/7. Также рассмотреть автоматизацию записи через бота / приложение вне рабочего времени.
+            </div>
+        </div>
+
+        <div class="problem-card">
+            <h4>Проблема: Самостоятельная запись по ОСМС</h4>
+            <p>Пациенты по ОСМС не могут самостоятельно записаться через приложение Damumed и вынуждены звонить в регистратуру.</p>
+            <div class="solution">
+                <strong>Решение:</strong> Необходимо выяснить, почему в приложении Damumed не отображается возможность записи по ОСМС. Возможно, не настроены слоты для онлайн-записи или нет привязки врачей к ОСМС-модулю.
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 7. ЧАСТЫЕ ВОПРОСЫ ПАЦИЕНТОВ ==================== -->
+    <div class="section">
+        <div class="section-title">
+            <div class="icon" style="background:#9c27b0;">7</div>
+            Частые вопросы и путаница пациентов
+        </div>
+        <p style="margin-bottom:16px; font-size:14px; color:#666;">Пациенты часто путают медицинские процедуры. Регистратор должен уточнять жалобы и направлять к правильному обследованию.</p>
+
+        <table class="info-table">
+            <tr>
+                <th>Пациент говорит</th>
+                <th>Что имеет в виду</th>
+                <th>Правильное направление</th>
+            </tr>
+            <tr>
+                <td>«Хочу проверить щитовидку»</td>
+                <td>Обследование щитовидной железы</td>
+                <td><span class="badge badge-blue">УЗИ</span> + анализы на гормоны</td>
+            </tr>
+            <tr>
+                <td>«Хочу шланг глотать»</td>
+                <td>Проверка желудка</td>
+                <td><span class="badge badge-purple">ФГДС</span> (фиброгастродуоденоскопия)</td>
+            </tr>
+            <tr>
+                <td>«Снять желудок на УЗИ»</td>
+                <td>Проверка желудка</td>
+                <td><span class="badge badge-purple">ФГДС</span> — УЗИ желудок не покажет</td>
+            </tr>
+            <tr>
+                <td>«Проверить кишечник»</td>
+                <td>Обследование кишечника</td>
+                <td><span class="badge badge-orange">Колоноскопия</span> — УЗИ не покажет</td>
+            </tr>
+            <tr>
+                <td>Путает УЗИ / рентген / КТ</td>
+                <td>Не знает разницу</td>
+                <td>Уточнить жалобы: «Что вас беспокоит?»</td>
+            </tr>
+        </table>
+
+        <div class="note">
+            <strong>Скрипт регистратора:</strong> Всегда спрашивать: «Что именно вас беспокоит?» — вместо того чтобы сразу записывать на процедуру, которую назвал пациент. Пациент может ошибаться в терминах.
+        </div>
+    </div>
+
+    <!-- ==================== 8. СВОДНАЯ СХЕМА ==================== -->
+    <div class="section">
+        <div class="section-title">
+            <div class="icon" style="background:#333;">8</div>
+            Сводная схема: путь пациента
+        </div>
+
+        <div style="text-align:center; padding:20px 0;">
+            <div style="display:inline-block; text-align:left; font-size:14px; line-height:2.2;">
+                <div style="background:#1a73e8; color:#fff; padding:8px 20px; border-radius:8px; text-align:center; font-weight:600;">Пациент обращается</div>
+                <div class="flow-arrow">&darr;</div>
+                <div style="background:#f0f4f8; padding:8px 20px; border-radius:8px; text-align:center; border:1px solid #ccd;">Звонок на 46-77-11 / Визит / Приложение Damumed</div>
+                <div class="flow-arrow">&darr;</div>
+                <div style="background:#fff3e0; padding:8px 20px; border-radius:8px; text-align:center; border:1px solid #ffd6a5;">Регистратор уточняет: тип приема + жалобы</div>
+                <div class="flow-arrow">&darr;</div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin:6px 0;">
+                    <div style="background:#e6f9ee; padding:8px; border-radius:8px; text-align:center; border:1px solid #a5d6a7; font-size:13px;">
+                        <strong>ОСМС</strong><br>Бесплатно
+                    </div>
+                    <div style="background:#e3f0ff; padding:8px; border-radius:8px; text-align:center; border:1px solid #90caf9; font-size:13px;">
+                        <strong>Платный</strong><br>Коммерческий
+                    </div>
+                    <div style="background:#fff3e0; padding:8px; border-radius:8px; text-align:center; border:1px solid #ffcc80; font-size:13px;">
+                        <strong>Договорной</strong><br>Организация
+                    </div>
+                </div>
+
+                <div class="flow-arrow">&darr;</div>
+                <div style="background:#f0f4f8; padding:8px 20px; border-radius:8px; text-align:center; border:1px solid #ccd;">Поиск пациента по ИИН &rarr; Выбор врача &rarr; Выбор слота</div>
+                <div class="flow-arrow">&darr;</div>
+                <div style="background:#e6f9ee; padding:8px 20px; border-radius:8px; text-align:center; border:1px solid #a5d6a7;">Сохранение записи &rarr; SMS/Push пациенту</div>
+                <div class="flow-arrow">&darr;</div>
+                <div style="background:#2ecc71; color:#fff; padding:8px 20px; border-radius:8px; text-align:center; font-weight:600;">Прием у врача</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 9. ПЛОЩАДКИ ==================== -->
+    <div class="section">
+        <div class="section-title">
+            <div class="icon" style="background:#607d8b;">9</div>
+            Площадки МЦ «Нейрон»
+        </div>
+        <table class="info-table">
+            <tr><th>Площадка</th><th>Тип приема</th><th>Примечание</th></tr>
+            <tr>
+                <td>14 микрорайон (основная)</td>
+                <td>ОСМС + Платный + Договорной</td>
+                <td>Основная регистратура, колл-центр 46-77-11</td>
+            </tr>
+            <tr>
+                <td>5 корпус (Университет)</td>
+                <td>Договорной + Платный</td>
+                <td>Обслуживание студентов и сотрудников</td>
+            </tr>
+            <tr>
+                <td>МСП (наверху)</td>
+                <td>ОСМС + Соисполнение</td>
+                <td>Также записывают пациентов «Нейрона»</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <div style="text-align:center; padding:20px; color:#999; font-size:13px;">
+        Документ сформирован на основе транскрибации аудиозаписи совещания.<br>
+        МЦ «Нейрон» &mdash; neironclinic.kz
+    </div>
+
+</div>
+</body>
+</html>
